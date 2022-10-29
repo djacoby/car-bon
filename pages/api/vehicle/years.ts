@@ -1,16 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-// TODO: make generic reponse type with passable value for result
-type Data = {
-  result: string
-  error: boolean
-}
+import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces'
 
-// TODO: make type for response
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<ApiResponse<FuelEconomyApiValue[]>>
 ) {
     if (req.method !== 'GET') {
       return res.status(405).json({ result: 'Method not allowed', error: true })    
@@ -23,7 +18,7 @@ export default async function handler(
       }
     })
 
-    const result = await years.json();
+    const { menuItem }: FuelEconomyApiResponse = await years.json();
 
-    res.status(200).json({ result, error: false })
+    res.status(200).json({ result: menuItem, error: false })
 }

@@ -1,13 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type Data = {
-  result: string
-  error: boolean
-}
+import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<ApiResponse<FuelEconomyApiValue[]>>
 ) {
     if (req.method !== 'GET') {
       return res.status(405).json({ result: 'Method not allowed', error: true })    
@@ -26,7 +23,7 @@ export default async function handler(
       }
     })
 
-    const result = await makes.json();
+    const { menuItem }: FuelEconomyApiResponse = await makes.json();
 
-    res.status(200).json({ result, error: false })
+    res.status(200).json({ result: menuItem, error: false })
 }
