@@ -36,27 +36,33 @@ export default function Home() {
   },[selectedYear, selectedMake, selectedModel])
 
   async function getYears() {
-    const years: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json()
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json()
+
+    // if (years.length) {
+    //   updateMakes([])
+    //   updateModels([])
+    //   updateTrims([])
+    // }
   
-    updateYears(years.result as FuelEconomyApiValue[])
+    updateYears(res.result as FuelEconomyApiValue[])
   }
 
   async function getMakes() {
-    const makes: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${selectedYear}`)).json()
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${selectedYear}`)).json()
   
-    updateMakes(makes.result as FuelEconomyApiValue[])
+    updateMakes(res.result as FuelEconomyApiValue[])
   }
 
   async function getModels() {
-    const models: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${selectedMake}`)).json()
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${selectedMake}`)).json()
   
-    updateModels(models.result as FuelEconomyApiValue[])
+    updateModels(res.result as FuelEconomyApiValue[])
   }
 
   async function getTrims() {
-    const trims: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${selectedModel}`)).json()
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${selectedModel}`)).json()
   
-    updateTrims(trims.result as FuelEconomyApiValue[])
+    updateTrims(res.result as FuelEconomyApiValue[])
   }
 
   return (
