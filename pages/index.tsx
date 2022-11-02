@@ -109,14 +109,18 @@ export default function Home() {
             updateStateFn={updateSelectedModel}
           />
 
-          <DropdownSelect
-            disabled={!selectedModel}
-            label='Select Vehicle Trim'
-            placeholder='Trim'
-            data={trims}
-            value={selectedTrim}
-            updateStateFn={updateSelectedTrim}
-          />
+          {
+            !!trims.length &&
+            <DropdownSelect
+              disabled={!selectedModel}
+              label='Select Vehicle Trim'
+              placeholder='Trim'
+              data={trims}
+              value={selectedTrim}
+              updateStateFn={updateSelectedTrim}
+            />
+          }
+
 
         </Container>
 
