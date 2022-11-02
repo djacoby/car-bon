@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces'
+import { reshapeApiResponse } from '../../../shared/reshape-api-response';
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +24,9 @@ export default async function handler(
       }
     })
 
-    const { menuItem }: FuelEconomyApiResponse = await makes.json();
+    const response: FuelEconomyApiResponse = await makes.json()
 
-    res.status(200).json({ result: menuItem, error: false })
+    const result = reshapeApiResponse(response)
+
+    res.status(200).json({ result, error: false })
 }
