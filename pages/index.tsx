@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
+
+import { Title, Container, Center, Text } from '@mantine/core'
 
 export default function Home() {
   return (
@@ -11,12 +12,24 @@ export default function Home() {
       </Head>
 
       <main>
-        Main
+        <Container>
+          <Center>
+            <Title order={1}>Welcome to CarBon!</Title>
+          </Center>
+        </Container>
+
+        <Container mt='md' size="xs" px="xs">
+          <Center>
+            <Text>
+              Enter your vehicle information (year, make, model, trim) the distance of your commute (one way), and the number of days you make the commute.
+            </Text>
+          </Center>
+        </Container>
       </main>
 
-      <footer>
+      {/* <footer>
         Footer
-      </footer>
+      </footer> */}
     </div>
   )
 }
