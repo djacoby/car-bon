@@ -7,12 +7,33 @@ import DropdownSelect from '../components/DropdownSelect'
 import { ApiResponse, FuelEconomyApiValue } from '../shared/interfaces'
 
 export default function Home() {
-  const [years, updateYears] = useState([] as FuelEconomyApiValue[]);
+  const [years, updateYears] = useState([] as FuelEconomyApiValue[])
   const [selectedYear, updateSelectedYear] = useState<string | null>(null)
+
+  const [makes, updateMakes] = useState([] as FuelEconomyApiValue[])
+  const [selectedMake, updateSelectedMake] = useState<string | null>(null)
+
+  const [models, updateModels] = useState([] as FuelEconomyApiValue[])
+  const [selectedModel, updateSelectedModel] = useState<string | null>(null)
+
+  const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
+  const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
   
   useEffect(() => {
     getYears()
-  },[])
+
+    if (selectedYear) {
+      getMakes()
+    }
+
+    if (selectedMake) {
+      getModels()
+    }
+
+    if (selectedModel) {
+      getTrims()
+    }
+  },[selectedYear, selectedMake, selectedModel])
 
   async function getYears() {
     const years: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json()
@@ -20,7 +41,23 @@ export default function Home() {
     updateYears(years.result as FuelEconomyApiValue[])
   }
 
+  async function getMakes() {
+    const makes: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${selectedYear}`)).json()
+  
+    updateMakes(makes.result as FuelEconomyApiValue[])
+  }
 
+  async function getModels() {
+    const models: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${selectedMake}`)).json()
+  
+    updateModels(models.result as FuelEconomyApiValue[])
+  }
+
+  async function getTrims() {
+    const trims: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${selectedModel}`)).json()
+  
+    updateTrims(trims.result as FuelEconomyApiValue[])
+  }
 
   return (
     <div>
@@ -53,6 +90,34 @@ export default function Home() {
             value={selectedYear}
             updateStateFn={updateSelectedYear}
           />
+
+          <DropdownSelect
+            disabled={!selectedYear}
+            label='Select Vehicle Make'
+            placeholder='Make'
+            data={makes}
+            value={selectedMake}
+            updateStateFn={updateSelectedMake}
+          />
+
+          <DropdownSelect
+            disabled={!selectedMake}
+            label='Select Vehicle Model'
+            placeholder='Model'
+            data={models}
+            value={selectedModel}
+            updateStateFn={updateSelectedModel}
+          />
+
+          <DropdownSelect
+            disabled={!selectedModel}
+            label='Select Vehicle Trim'
+            placeholder='Trim'
+            data={trims}
+            value={selectedTrim}
+            updateStateFn={updateSelectedTrim}
+          />
+
         </Container>
 
       </main>
