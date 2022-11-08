@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
-import { Title, Container, Center, Text } from '@mantine/core'
+import {
+  Title,
+  Container,
+  Center,
+  Text,
+  SimpleGrid,
+  Button,
+} from '@mantine/core'
 
 import DropdownSelect from '../components/DropdownSelect'
-import { ApiResponse, FuelEconomyApiValue } from '../shared/interfaces'
+import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces'
 
 export default function Home() {
   const [years, updateYears] = useState([] as FuelEconomyApiValue[])
@@ -19,6 +26,8 @@ export default function Home() {
   // TODO: error handle if no trims return
   const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
   const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
+
+  const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle>()
   
   useEffect(() => {
     getYears()
@@ -48,6 +57,14 @@ export default function Home() {
     updateTrims(res.result as FuelEconomyApiValue[])
   }
 
+  async function getVehicle() {
+    const res: ApiResponse<FuelEconomyApiVehicle> = await (await fetch(`http://localhost:3000/api/vehicle/${selectedTrim}`)).json()
+
+    console.log(res.result)
+
+    updateVehicle(res.result as FuelEconomyApiVehicle)
+  }
+
   function setYear(year: string) {
     updateSelectedYear(year)
     getMakes(year)
@@ -64,6 +81,19 @@ export default function Home() {
     updateSelectedModel(model)
     getTrims(model)
     updateSelectedTrim(null)
+  }
+
+  function resetForm() {
+    updateSelectedYear(null)
+    
+    updateSelectedMake(null)
+    updateMakes([])
+
+    updateSelectedModel(null)
+    updateModels([])
+
+    updateSelectedTrim(null)
+    updateTrims([])
   }
 
   return (
@@ -128,6 +158,21 @@ export default function Home() {
             />
           }
 
+          <SimpleGrid mt='md' cols={2}>
+            <Button
+              color='red'
+              disabled={!selectedYear}
+              onClick={resetForm}
+            >
+              Clear
+            </Button>
+            <Button
+              disabled={!selectedTrim}
+              onClick={getVehicle}
+            >
+              Submit
+            </Button>
+          </SimpleGrid>
 
         </Container>
 
