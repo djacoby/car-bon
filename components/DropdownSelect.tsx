@@ -6,7 +6,7 @@ interface Props {
   label: string;
   placeholder: string;
   data: FuelEconomyApiValue[];
-  value: string | null;
+  value: string | undefined;
   onChangeFn: Function;
 }
 

@@ -15,17 +15,17 @@ import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../share
 
 export default function Home() {
   const [years, updateYears] = useState([] as FuelEconomyApiValue[])
-  const [selectedYear, updateSelectedYear] = useState<string | null>(null)
+  const [selectedYear, updateSelectedYear] = useState<string>()
 
   const [makes, updateMakes] = useState([] as FuelEconomyApiValue[])
-  const [selectedMake, updateSelectedMake] = useState<string | null>(null)
+  const [selectedMake, updateSelectedMake] = useState<string>()
 
   const [models, updateModels] = useState([] as FuelEconomyApiValue[])
-  const [selectedModel, updateSelectedModel] = useState<string | null>(null)
+  const [selectedModel, updateSelectedModel] = useState<string>()
 
   // TODO: error handle if no trims return
   const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
-  const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
+  const [selectedTrim, updateSelectedTrim] = useState<string>()
 
   const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle>()
   
@@ -68,32 +68,34 @@ export default function Home() {
   function setYear(year: string) {
     updateSelectedYear(year)
     getMakes(year)
-    updateSelectedMake(null)
+    updateSelectedMake(undefined)
   }
 
   function setMake(make: string) {
     updateSelectedMake(make)
     getModels(make)
-    updateSelectedModel(null)
+    updateSelectedModel(undefined)
   }
 
   function setModel(model: string) {
     updateSelectedModel(model)
     getTrims(model)
-    updateSelectedTrim(null)
+    updateSelectedTrim(undefined)
   }
 
   function resetForm() {
-    updateSelectedYear(null)
+    updateSelectedYear(undefined)
     
-    updateSelectedMake(null)
+    updateSelectedMake(undefined)
     updateMakes([])
 
-    updateSelectedModel(null)
+    updateSelectedModel(undefined)
     updateModels([])
 
-    updateSelectedTrim(null)
+    updateSelectedTrim(undefined)
     updateTrims([])
+
+    updateVehicle(undefined)
   }
 
   return (
@@ -174,7 +176,9 @@ export default function Home() {
             </Button>
           </SimpleGrid>
 
+        {vehicle && JSON.stringify(vehicle, null, 2)}
         </Container>
+
 
       </main>
 
