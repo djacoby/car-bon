@@ -24,6 +24,7 @@ export default async function handler(
       }
     })
 
+    // TODO: remove this comment
     if (trims.status !== 200) {
       lookupVehicleWithoutTrim(req, res)
     }
