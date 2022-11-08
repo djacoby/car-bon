@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Select } from '@mantine/core';
 import { FuelEconomyApiValue } from '../shared/interfaces';
 
@@ -8,10 +7,10 @@ interface Props {
   placeholder: string;
   data: FuelEconomyApiValue[];
   value: string | null;
-  updateStateFn: Dispatch<SetStateAction<string | null>>,
+  onChangeFn: Function;
 }
 
-export default function DropdownSelect({ disabled, label, placeholder, data, value, updateStateFn}: Props) {
+export default function DropdownSelect({ disabled, label, placeholder, data, value, onChangeFn}: Props) {
   return (
     <Select
       disabled={disabled}
@@ -19,7 +18,7 @@ export default function DropdownSelect({ disabled, label, placeholder, data, val
       placeholder={placeholder}
       data={data}
       value={value}
-      onChange={(val: string) => updateStateFn(val)}
+      onChange={(val: string) => onChangeFn(val)}
       searchable
     />
   );

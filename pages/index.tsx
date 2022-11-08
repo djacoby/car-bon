@@ -16,53 +16,54 @@ export default function Home() {
   const [models, updateModels] = useState([] as FuelEconomyApiValue[])
   const [selectedModel, updateSelectedModel] = useState<string | null>(null)
 
+  // TODO: error handle if no trims return
   const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
   const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
   
   useEffect(() => {
     getYears()
-
-    if (selectedYear) {
-      getMakes()
-    }
-
-    if (selectedMake) {
-      getModels()
-    }
-
-    if (selectedModel) {
-      getTrims()
-    }
-  },[selectedYear, selectedMake, selectedModel])
+  },[])
 
   async function getYears() {
     const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json()
-
-    // if (years.length) {
-    //   updateMakes([])
-    //   updateModels([])
-    //   updateTrims([])
-    // }
   
     updateYears(res.result as FuelEconomyApiValue[])
   }
 
-  async function getMakes() {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${selectedYear}`)).json()
+  async function getMakes(year: string) {
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${year}`)).json()
   
     updateMakes(res.result as FuelEconomyApiValue[])
   }
 
-  async function getModels() {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${selectedMake}`)).json()
+  async function getModels(make: string) {
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${make}`)).json()
   
     updateModels(res.result as FuelEconomyApiValue[])
   }
 
-  async function getTrims() {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${selectedModel}`)).json()
+  async function getTrims(model: string) {
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${model}`)).json()
   
     updateTrims(res.result as FuelEconomyApiValue[])
+  }
+
+  function setYear(year: string) {
+    updateSelectedYear(year)
+    getMakes(year)
+    updateSelectedMake(null)
+  }
+
+  function setMake(make: string) {
+    updateSelectedMake(make)
+    getModels(make)
+    updateSelectedModel(null)
+  }
+
+  function setModel(model: string) {
+    updateSelectedModel(model)
+    getTrims(model)
+    updateSelectedTrim(null)
   }
 
   return (
@@ -94,7 +95,7 @@ export default function Home() {
             placeholder='Year'
             data={years}
             value={selectedYear}
-            updateStateFn={updateSelectedYear}
+            onChangeFn={setYear}
           />
 
           <DropdownSelect
@@ -103,7 +104,7 @@ export default function Home() {
             placeholder='Make'
             data={makes}
             value={selectedMake}
-            updateStateFn={updateSelectedMake}
+            onChangeFn={setMake}
           />
 
           <DropdownSelect
@@ -112,7 +113,7 @@ export default function Home() {
             placeholder='Model'
             data={models}
             value={selectedModel}
-            updateStateFn={updateSelectedModel}
+            onChangeFn={setModel}
           />
 
           {
@@ -123,7 +124,7 @@ export default function Home() {
               placeholder='Trim'
               data={trims}
               value={selectedTrim}
-              updateStateFn={updateSelectedTrim}
+              onChangeFn={updateSelectedTrim}
             />
           }
 
