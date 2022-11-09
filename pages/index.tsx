@@ -15,17 +15,16 @@ import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../share
 
 export default function Home() {
   const [years, updateYears] = useState([] as FuelEconomyApiValue[])
-  const [selectedYear, updateSelectedYear] = useState<string>()
+  const [selectedYear, updateSelectedYear] = useState<string | null>(null)
 
   const [makes, updateMakes] = useState([] as FuelEconomyApiValue[])
-  const [selectedMake, updateSelectedMake] = useState<string>()
+  const [selectedMake, updateSelectedMake] = useState<string | null>(null)
 
   const [models, updateModels] = useState([] as FuelEconomyApiValue[])
-  const [selectedModel, updateSelectedModel] = useState<string>()
+  const [selectedModel, updateSelectedModel] = useState<string | null>(null)
 
-  // TODO: error handle if no trims return
   const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
-  const [selectedTrim, updateSelectedTrim] = useState<string>()
+  const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
 
   const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle>()
   
@@ -68,34 +67,34 @@ export default function Home() {
   function setYear(year: string) {
     updateSelectedYear(year)
     getMakes(year)
-    updateSelectedMake(undefined)
+    updateSelectedMake(null)
   }
 
   function setMake(make: string) {
     updateSelectedMake(make)
     getModels(make)
-    updateSelectedModel(undefined)
+    updateSelectedModel(null)
   }
 
   function setModel(model: string) {
     updateSelectedModel(model)
     getTrims(model)
-    updateSelectedTrim(undefined)
+    updateSelectedTrim(null)
   }
 
   function resetForm() {
-    updateSelectedYear(undefined)
+    updateVehicle(undefined)
     
-    updateSelectedMake(undefined)
+    updateSelectedTrim(null)
+    updateTrims([])
+    
+    updateSelectedModel(null)
+    updateModels([])
+    
+    updateSelectedMake(null)
     updateMakes([])
 
-    updateSelectedModel(undefined)
-    updateModels([])
-
-    updateSelectedTrim(undefined)
-    updateTrims([])
-
-    updateVehicle(undefined)
+    updateSelectedYear(null)
   }
 
   return (
