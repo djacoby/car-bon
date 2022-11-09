@@ -15,13 +15,18 @@ export interface FuelEconomyApiValue {
 }
 
 /**
+ * Fuel economy menu itme
+ */
+export interface FuelEconomyMenuItem {
+  text: string;
+  value: string;
+}
+
+/**
  * Years, makes, models, and trims response from fueleconomy.gov
  */
 export interface FuelEconomyApiResponse {
-  menuItem: {
-    text: string;
-    value: string;
-  }[];
+  menuItem: FuelEconomyMenuItem | FuelEconomyMenuItem[];
 }
 
 /**
