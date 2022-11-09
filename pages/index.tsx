@@ -26,7 +26,7 @@ export default function Home() {
   const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
   const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
 
-  const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle>()
+  const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle | null>(null)
   
   useEffect(() => {
     getYears()
@@ -75,6 +75,8 @@ export default function Home() {
 
     updateSelectedTrim(null)
     updateTrims([])
+
+    updateVehicle(null)
   }
 
   function setMake(make: string) {
@@ -85,12 +87,17 @@ export default function Home() {
 
     updateSelectedTrim(null)
     updateTrims([])
+
+    updateVehicle(null)
   }
 
   function setModel(model: string) {
     updateSelectedModel(model)
     getTrims(model)
+
     updateSelectedTrim(null)
+
+    updateVehicle(null)
   }
 
   function resetForm() {
@@ -105,7 +112,7 @@ export default function Home() {
     updateSelectedTrim(null)
     updateTrims([])
 
-    updateVehicle(undefined)
+    updateVehicle(null)
   }
 
   return (
@@ -186,7 +193,7 @@ export default function Home() {
             </Button>
           </SimpleGrid>
 
-        {vehicle && JSON.stringify(vehicle, null, 2)}
+        {vehicle && `Co2 Grams per Mile: ${vehicle.co2TailpipeGpm}`}
         </Container>
 
 
