@@ -67,13 +67,24 @@ export default function Home() {
   function setYear(year: string) {
     updateSelectedYear(year)
     getMakes(year)
+    
     updateSelectedMake(null)
+
+    updateSelectedModel(null)
+    updateModels([])
+
+    updateSelectedTrim(null)
+    updateTrims([])
   }
 
   function setMake(make: string) {
     updateSelectedMake(make)
     getModels(make)
+
     updateSelectedModel(null)
+
+    updateSelectedTrim(null)
+    updateTrims([])
   }
 
   function setModel(model: string) {
@@ -83,18 +94,18 @@ export default function Home() {
   }
 
   function resetForm() {
-    updateVehicle(undefined)
-    
-    updateSelectedTrim(null)
-    updateTrims([])
-    
-    updateSelectedModel(null)
-    updateModels([])
+    updateSelectedYear(null)
     
     updateSelectedMake(null)
     updateMakes([])
 
-    updateSelectedYear(null)
+    updateSelectedModel(null)
+    updateModels([])
+
+    updateSelectedTrim(null)
+    updateTrims([])
+
+    updateVehicle(undefined)
   }
 
   return (
