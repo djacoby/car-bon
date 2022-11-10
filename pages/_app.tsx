@@ -11,8 +11,7 @@ export default function App(props: AppProps) {
     <>
       <Head>
         <title>Page title</title>
-        {/* <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" /> */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
       </Head>
 
