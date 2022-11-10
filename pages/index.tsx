@@ -204,7 +204,15 @@ export default function Home() {
                 </Button>
               </SimpleGrid>
 
-            {vehicle && `Co2 Grams per Mile: ${vehicle.co2TailpipeGpm}`}
+              {/* {vehicle && `Co2 Grams per Mile: ${vehicle.co2TailpipeGpm}`} */}
+
+              {
+                vehicle && 
+                <div>
+                  <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
+                  <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
+                </div>
+              }
             </Container>
           </Grid.Col>
 
