@@ -129,11 +129,11 @@ export default function Home() {
       <main>
         <Grid>
 
-          <Grid.Col className='border' span={9}>
+          <Grid.Col className='debugging-border max-height' span={9}>
             <Map />
           </Grid.Col>
 
-          <Grid.Col className='border' span={3}>
+          <Grid.Col className='debugging-border' span={3}>
             <Container mt='md'>
               <Center>
                 <Title order={1}>Welcome to CarBon!</Title>
