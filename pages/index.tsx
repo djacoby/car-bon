@@ -13,7 +13,8 @@ import {
 
 
 import DropdownSelect from '../components/DropdownSelect'
-import Map from '../components/MapComponent'
+import MapComponent from '../components/MapComponent'
+
 import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces'
 
 export default function Home() {
@@ -130,7 +131,7 @@ export default function Home() {
         <Grid>
 
           <Grid.Col className='debugging-border max-height' span={9}>
-            <Map />
+            <MapComponent />
           </Grid.Col>
 
           <Grid.Col className='debugging-border' span={3}>

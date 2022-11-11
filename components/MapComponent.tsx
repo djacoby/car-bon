@@ -1,35 +1,55 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Map } from 'maplibre-gl'
 
-const getUserLocationErrorCb = (error: any) => {
-  console.log(error)
-}
+import { LoadingOverlay } from '@mantine/core';
 
 export default function MapComponent() {
+  const [loading, updateLoading] = useState(true)
+
   useEffect(() => {
-    // TODO: refactor this and add some sort of loader if fetching geographic coords
+    let map = new Map({
+      container: 'map',
+      style: 'https://tiles.stadiamaps.com/styles/osm_bright.json', // stylesheet location
+      zoom: 9, // starting zoom
+    })
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        new Map({
-          container: 'map',
-          style: 'https://tiles.stadiamaps.com/styles/osm_bright.json', // stylesheet location
-          center: [position.coords.longitude, position.coords.latitude], // starting position [lng, lat]
-          zoom: 9, // starting zoom
-        });
+        const { longitude, latitude } = position.coords
+        
+        map.setCenter({
+          lng: longitude,
+	        lat: latitude,
+        })
+
+        // Added setTimout to add some "juice to the ux"
+        setTimeout(() => updateLoading(false), 1500)
       },
-      () => {
-        new Map({
-          container: 'map',
-          style: 'https://tiles.stadiamaps.com/styles/osm_bright.json', // stylesheet location
-          center: [-74.0060, 40.7128], // starting position [lng, lat]
-          zoom: 9, // starting zoom
-        });
+      (_error) => {
+        // If user location is turned off, default to NYC
+        map.setCenter({
+          lng: -74.0060,
+          lat: 40.7128,
+        })
+
+        // Added setTimout to add some "juice to the ux"
+        setTimeout(() => updateLoading(false), 1500)
       }
     )
 
   }, [])
 
   return (
-    <div id='map'></div>
+
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <LoadingOverlay
+        visible={loading}
+        overlayBlur={2}
+        loaderProps={{
+          size: 'xl'
+        }}
+      />
+      {<div id='map'></div>}
+    </div>
   );
 }
