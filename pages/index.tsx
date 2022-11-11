@@ -13,7 +13,7 @@ import {
 
 
 import DropdownSelect from '../components/DropdownSelect'
-import Map from '../components/Map'
+import Map from '../components/MapComponent'
 import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces'
 
 export default function Home() {
