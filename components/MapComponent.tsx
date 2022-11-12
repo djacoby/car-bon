@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect
+} from 'react';
+
 import { Map } from 'maplibre-gl';
 
-import { LoadingOverlay } from '@mantine/core';
+interface Props {
+  updateLoadingFn: Dispatch<SetStateAction<boolean>>,
+}
 
-export default function MapComponent() {
-  const [loading, updateLoading] = useState(true);
-
+export default function MapComponent({ updateLoadingFn }: Props) {
   useEffect(() => {
     let map = new Map({
       container: 'map',
@@ -24,7 +29,7 @@ export default function MapComponent() {
 
         // Added setTimout to add some "juice to the ux"
         // setTimeout(() => updateLoading(false), 1500)
-        updateLoading(false);
+        updateLoadingFn(false);
       },
       (_error) => {
         // If user location is turned off, default to NYC
@@ -35,23 +40,13 @@ export default function MapComponent() {
 
         // Added setTimout to add some "juice to the ux"
         // setTimeout(() => updateLoading(false), 1500)
-        updateLoading(false);
+        updateLoadingFn(false);
       }
     );
 
   }, []);
 
   return (
-
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <LoadingOverlay
-        visible={loading}
-        overlayBlur={2}
-        loaderProps={{
-          size: 'xl'
-        }}
-      />
-      {<div id='map'></div>}
-    </div>
+    <div id='map'></div>
   );
 }

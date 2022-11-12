@@ -9,6 +9,7 @@ import {
   Text,
   SimpleGrid,
   Button,
+  LoadingOverlay,
 } from '@mantine/core';
 
 
@@ -31,6 +32,8 @@ export default function Home() {
   const [selectedTrim, updateSelectedTrim] = useState<string | null>(null);
 
   const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle | null>(null);
+
+  const [loading, updateLoading] = useState(true);
 
   useEffect(() => {
     getYears();
@@ -127,100 +130,110 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main>
-        <Grid>
+      <div style={{ width: 'auto', position: 'relative' }}>
+        <LoadingOverlay
+          visible={loading}
+          overlayBlur={2}
+          loaderProps={{
+            size: 'xl'
+          }}
+        />
+        {
+          <main>
+            <Grid style={{ margin: 0 }}>
 
-          <Grid.Col className='debugging-border max-height' span={9}>
-            <MapComponent />
-          </Grid.Col>
+              <Grid.Col p={0} className='debugging-border max-height shadow' span={9}>
+                <MapComponent updateLoadingFn={updateLoading} />
+              </Grid.Col>
 
-          <Grid.Col className='debugging-border' span={3}>
-            <Container mt='md'>
-              <Center>
-                <Title order={1}>Welcome to CarBon!</Title>
-              </Center>
-            </Container>
+              <Grid.Col p={0} className='debugging-border' span={3}>
+                <Container mt='md'>
+                  <Center>
+                    <Title order={1}>Welcome to CarBon!</Title>
+                  </Center>
+                </Container>
 
-            <Container mt='md' size='xs' px='xs'>
-              <Center>
-                <Text>
-                  {/* TODO: update this copy to reflect the updated functionality */}
-                  Enter your vehicle information (year, make, model, trim) the distance of your commute (one way), and the number of days you make the commute.
-                </Text>
-              </Center>
-            </Container>
+                <Container mt='md'>
+                  <Center>
+                    <Text>
+                      {/* TODO: update this copy to reflect the updated functionality */}
+                      Enter your vehicle information (year, make, model, trim) the distance of your commute (one way), and the number of days you make the commute.
+                    </Text>
+                  </Center>
+                </Container>
 
-            <Container mt='md' size='xs'>
-              <DropdownSelect
-                label='Select Vehicle Year'
-                placeholder='Year'
-                data={years}
-                value={selectedYear}
-                onChangeFn={setYear}
-              />
+                <Container mt='md'>
+                  <DropdownSelect
+                    label='Select Vehicle Year'
+                    placeholder='Year'
+                    data={years}
+                    value={selectedYear}
+                    onChangeFn={setYear}
+                  />
 
-              <DropdownSelect
-                disabled={!selectedYear}
-                label='Select Vehicle Make'
-                placeholder='Make'
-                data={makes}
-                value={selectedMake}
-                onChangeFn={setMake}
-              />
+                  <DropdownSelect
+                    disabled={!selectedYear}
+                    label='Select Vehicle Make'
+                    placeholder='Make'
+                    data={makes}
+                    value={selectedMake}
+                    onChangeFn={setMake}
+                  />
 
-              <DropdownSelect
-                disabled={!selectedMake}
-                label='Select Vehicle Model'
-                placeholder='Model'
-                data={models}
-                value={selectedModel}
-                onChangeFn={setModel}
-              />
+                  <DropdownSelect
+                    disabled={!selectedMake}
+                    label='Select Vehicle Model'
+                    placeholder='Model'
+                    data={models}
+                    value={selectedModel}
+                    onChangeFn={setModel}
+                  />
 
-              {
-                !!trims.length &&
-                <DropdownSelect
-                  disabled={!selectedModel}
-                  label='Select Vehicle Trim'
-                  placeholder='Trim'
-                  data={trims}
-                  value={selectedTrim}
-                  onChangeFn={updateSelectedTrim}
-                />
-              }
+                  {
+                    !!trims.length &&
+                    <DropdownSelect
+                      disabled={!selectedModel}
+                      label='Select Vehicle Trim'
+                      placeholder='Trim'
+                      data={trims}
+                      value={selectedTrim}
+                      onChangeFn={updateSelectedTrim}
+                    />
+                  }
 
-              <SimpleGrid mt='md' cols={2}>
-                <Button
-                  color='red'
-                  disabled={!selectedYear}
-                  onClick={resetForm}
-                >
-                  Clear
-                </Button>
-                <Button
-                  disabled={!selectedTrim}
-                  onClick={getVehicle}
-                >
-                  Submit
-                </Button>
-              </SimpleGrid>
+                  <SimpleGrid mt='md' cols={2}>
+                    <Button
+                      color='red'
+                      disabled={!selectedYear}
+                      onClick={resetForm}
+                    >
+                      Clear
+                    </Button>
+                    <Button
+                      disabled={!selectedTrim}
+                      onClick={getVehicle}
+                    >
+                      Submit
+                    </Button>
+                  </SimpleGrid>
 
-              {/* {vehicle && `Co2 Grams per Mile: ${vehicle.co2TailpipeGpm}`} */}
+                  {
+                    vehicle &&
+                    <div>
+                      <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
+                      <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
+                    </div>
+                  }
+                </Container>
+              </Grid.Col>
 
-              {
-                vehicle &&
-                <div>
-                  <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
-                  <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
-                </div>
-              }
-            </Container>
-          </Grid.Col>
-
-        </Grid>
+            </Grid>
 
 
-      </main>
+          </main>
+        }
+      </div>
+
 
       {/* <footer>
         Footer
