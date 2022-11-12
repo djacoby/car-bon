@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import Head from 'next/head'
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
 import {
   Title,
@@ -9,114 +9,114 @@ import {
   Text,
   SimpleGrid,
   Button,
-} from '@mantine/core'
+} from '@mantine/core';
 
 
-import DropdownSelect from '../components/DropdownSelect'
-import MapComponent from '../components/MapComponent'
+import DropdownSelect from '../components/DropdownSelect';
+import MapComponent from '../components/MapComponent';
 
-import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces'
+import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces';
 
 export default function Home() {
-  const [years, updateYears] = useState([] as FuelEconomyApiValue[])
-  const [selectedYear, updateSelectedYear] = useState<string | null>(null)
+  const [years, updateYears] = useState([] as FuelEconomyApiValue[]);
+  const [selectedYear, updateSelectedYear] = useState<string | null>(null);
 
-  const [makes, updateMakes] = useState([] as FuelEconomyApiValue[])
-  const [selectedMake, updateSelectedMake] = useState<string | null>(null)
+  const [makes, updateMakes] = useState([] as FuelEconomyApiValue[]);
+  const [selectedMake, updateSelectedMake] = useState<string | null>(null);
 
-  const [models, updateModels] = useState([] as FuelEconomyApiValue[])
-  const [selectedModel, updateSelectedModel] = useState<string | null>(null)
+  const [models, updateModels] = useState([] as FuelEconomyApiValue[]);
+  const [selectedModel, updateSelectedModel] = useState<string | null>(null);
 
-  const [trims, updateTrims] = useState([] as FuelEconomyApiValue[])
-  const [selectedTrim, updateSelectedTrim] = useState<string | null>(null)
+  const [trims, updateTrims] = useState([] as FuelEconomyApiValue[]);
+  const [selectedTrim, updateSelectedTrim] = useState<string | null>(null);
 
-  const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle | null>(null)
-  
+  const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle | null>(null);
+
   useEffect(() => {
-    getYears()
-  },[])
+    getYears();
+  },[]);
 
   async function getYears() {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json()
-  
-    updateYears(res.result as FuelEconomyApiValue[])
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json();
+
+    updateYears(res.result as FuelEconomyApiValue[]);
   }
 
   async function getMakes(year: string) {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${year}`)).json()
-  
-    updateMakes(res.result as FuelEconomyApiValue[])
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/makes?year=${year}`)).json();
+
+    updateMakes(res.result as FuelEconomyApiValue[]);
   }
 
   async function getModels(make: string) {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${make}`)).json()
-  
-    updateModels(res.result as FuelEconomyApiValue[])
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/models?year=${selectedYear}&make=${make}`)).json();
+
+    updateModels(res.result as FuelEconomyApiValue[]);
   }
 
   async function getTrims(model: string) {
-    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${model}`)).json()
-  
-    updateTrims(res.result as FuelEconomyApiValue[])
+    const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch(`http://localhost:3000/api/vehicle/trims?year=${selectedYear}&make=${selectedMake}&model=${model}`)).json();
+
+    updateTrims(res.result as FuelEconomyApiValue[]);
   }
 
   async function getVehicle() {
-    const res: ApiResponse<FuelEconomyApiVehicle> = await (await fetch(`http://localhost:3000/api/vehicle/${selectedTrim}`)).json()
+    const res: ApiResponse<FuelEconomyApiVehicle> = await (await fetch(`http://localhost:3000/api/vehicle/${selectedTrim}`)).json();
 
-    console.log(res.result)
+    console.log(res.result);
 
-    updateVehicle(res.result as FuelEconomyApiVehicle)
+    updateVehicle(res.result as FuelEconomyApiVehicle);
   }
 
   function setYear(year: string) {
-    updateSelectedYear(year)
-    getMakes(year)
-    
-    updateSelectedMake(null)
+    updateSelectedYear(year);
+    getMakes(year);
 
-    updateSelectedModel(null)
-    updateModels([])
+    updateSelectedMake(null);
 
-    updateSelectedTrim(null)
-    updateTrims([])
+    updateSelectedModel(null);
+    updateModels([]);
 
-    updateVehicle(null)
+    updateSelectedTrim(null);
+    updateTrims([]);
+
+    updateVehicle(null);
   }
 
   function setMake(make: string) {
-    updateSelectedMake(make)
-    getModels(make)
+    updateSelectedMake(make);
+    getModels(make);
 
-    updateSelectedModel(null)
+    updateSelectedModel(null);
 
-    updateSelectedTrim(null)
-    updateTrims([])
+    updateSelectedTrim(null);
+    updateTrims([]);
 
-    updateVehicle(null)
+    updateVehicle(null);
   }
 
   function setModel(model: string) {
-    updateSelectedModel(model)
-    getTrims(model)
+    updateSelectedModel(model);
+    getTrims(model);
 
-    updateSelectedTrim(null)
+    updateSelectedTrim(null);
 
-    updateVehicle(null)
+    updateVehicle(null);
   }
 
   function resetForm() {
-    updateSelectedYear(null)
-    
-    updateSelectedMake(null)
-    updateMakes([])
+    updateSelectedYear(null);
 
-    updateSelectedModel(null)
-    updateModels([])
+    updateSelectedMake(null);
+    updateMakes([]);
 
-    updateSelectedTrim(null)
-    updateTrims([])
+    updateSelectedModel(null);
+    updateModels([]);
 
-    updateVehicle(null)
+    updateSelectedTrim(null);
+    updateTrims([]);
+
+    updateVehicle(null);
   }
 
   return (
@@ -208,7 +208,7 @@ export default function Home() {
               {/* {vehicle && `Co2 Grams per Mile: ${vehicle.co2TailpipeGpm}`} */}
 
               {
-                vehicle && 
+                vehicle &&
                 <div>
                   <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
                   <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
@@ -226,5 +226,5 @@ export default function Home() {
         Footer
       </footer> */}
     </>
-  )
+  );
 }

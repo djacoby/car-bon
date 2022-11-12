@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces'
+import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces';
 import { reshapeApiResponse } from '../../../shared/reshape-api-response';
 
 
@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse<ApiResponse<FuelEconomyApiValue[]>>
 ) {
     if (req.method !== 'GET') {
-      return res.status(405).json({ result: 'Method not allowed', error: true })    
+      return res.status(405).json({ result: 'Method not allowed', error: true });
     }
 
     const years = await fetch('https://www.fueleconomy.gov/ws/rest/vehicle/menu/year', {
@@ -17,11 +17,11 @@ export default async function handler(
       headers: {
         'Accept': 'application/json'
       }
-    })
+    });
 
-    const response: FuelEconomyApiResponse = await years.json()
+    const response: FuelEconomyApiResponse = await years.json();
 
-    const result = reshapeApiResponse(response)
+    const result = reshapeApiResponse(response);
 
-    res.status(200).json({ result, error: false })
+    res.status(200).json({ result, error: false });
 }
