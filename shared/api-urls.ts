@@ -14,4 +14,7 @@ export const fuelEconomyApiRoute = {
 /**
  * Open cage API URL
  */
-export const openCageApiUrl = `${config.openCageApiUrl}${config.openCageApiKey}`;
+export const openCageApiUrlRoute = {
+  geoCoordinates: (address: string) => `${config.openCageApiUrl}${config.openCageApiKey}&q=${address}`,
+};
+
