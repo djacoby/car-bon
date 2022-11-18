@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { ApiResponse, FuelEconomyApiVehicle, FuelEconomyApiResponse } from '../../../shared/interfaces';
+import type { ApiResponse, FuelEconomyApiVehicle } from '../../../shared/interfaces';
 
 
 export default async function handler(
