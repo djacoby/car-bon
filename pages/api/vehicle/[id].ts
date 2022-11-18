@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { ApiResponse, FuelEconomyApiVehicle } from '../../../shared/interfaces';
 
+import { fuelEconomyApiRoute } from '../../../shared/api-urls';
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,7 +19,9 @@ export default async function handler(
       return res.status(400).json({ result: 'Bad Request', error: true });
     }
 
-    const vehicle = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${id}`, {
+    const url = fuelEconomyApiRoute.vehicle(<string> id);
+
+    const vehicle = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'

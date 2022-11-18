@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces';
 import { reshapeApiResponse } from '../../../shared/reshape-api-response';
+import { fuelEconomyApiRoute } from '../../../shared/api-urls';
 
 
 export default async function handler(
@@ -12,7 +13,9 @@ export default async function handler(
       return res.status(405).json({ result: 'Method not allowed', error: true });
     }
 
-    const years = await fetch('https://www.fueleconomy.gov/ws/rest/vehicle/menu/year', {
+    const url = fuelEconomyApiRoute.year();
+
+    const years = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
