@@ -30,7 +30,7 @@ export default async function handler(
 
     const result = await vehicle.json();
 
-    // TODO: calculate carbon emitted by various aggregatons (trip, week, month, year)
+    // TODO: trim down reponse object to necessary props and create interfaces for said object
 
     res.status(200).json({ result, error: false });
 }

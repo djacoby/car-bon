@@ -20,6 +20,7 @@ export default function DropdownSelect({ disabled, label, placeholder, data, val
       value={value}
       onChange={(val: string) => onChangeFn(val)}
       searchable
+      radius='md'
     />
   );
 }
