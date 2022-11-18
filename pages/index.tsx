@@ -213,7 +213,7 @@ export default function Home() {
                       disabled={!selectedTrim}
                       onClick={getVehicle}
                     >
-                      Submit
+                      Select
                     </Button>
                   </SimpleGrid>
 

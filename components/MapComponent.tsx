@@ -34,8 +34,6 @@ export default function MapComponent({ updateLoadingFn }: Props) {
 	        lat: latitude,
         });
 
-        // Added setTimout to add some "juice to the ux"
-        // setTimeout(() => updateLoading(false), 1500)
         updateLoadingFn(false);
       },
       (_error) => {
@@ -45,8 +43,6 @@ export default function MapComponent({ updateLoadingFn }: Props) {
           lat: 40.7128,
         });
 
-        // Added setTimout to add some "juice to the ux"
-        // setTimeout(() => updateLoading(false), 1500)
         updateLoadingFn(false);
       }
     );
@@ -59,6 +55,8 @@ export default function MapComponent({ updateLoadingFn }: Props) {
 
 
     map.addControl(new NavigationControl(navCtrlOpts));
+
+    // TODO: test marker
 
     // First, we define our marker locations. You can use whatever format you want when
     // working with custom markers, but we have chosen to use GeoJSON for this example, as
@@ -103,6 +101,8 @@ export default function MapComponent({ updateLoadingFn }: Props) {
 
       // Finally, we add the marker to the map.
       marker.addTo(map);
+
+      // TODO: end test marker
     });
 
   }, []);
