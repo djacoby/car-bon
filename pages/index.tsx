@@ -244,13 +244,13 @@ export default function Home() {
                     </Button>
                   </SimpleGrid>
 
-                  {
+                  {/* {
                     vehicle &&
                     <div>
                       <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
                       <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
                     </div>
-                  }
+                  } */}
 
 
                   <TextInput
@@ -274,10 +274,12 @@ export default function Home() {
                   />
 
                   <Button
+                    fullWidth
+                    disabled={!vehicle}
                     onClick={getCoords}
                     radius='md'
                   >
-                    Select
+                    Calculate
                   </Button>
                 </Container>
               </Grid.Col>
