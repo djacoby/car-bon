@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { ApiResponse, FuelEconomyApiVehicle, FuelEconomyApiResponse } from '../../../shared/interfaces';
+import type { ApiResponse, FuelEconomyApiVehicle } from '../../../shared/interfaces';
+
+import { fuelEconomyApiRoute } from '../../../shared/api-urls';
 
 
 export default async function handler(
@@ -17,7 +19,9 @@ export default async function handler(
       return res.status(400).json({ result: 'Bad Request', error: true });
     }
 
-    const vehicle = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/${id}`, {
+    const url = fuelEconomyApiRoute.vehicle(<string> id);
+
+    const vehicle = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -26,7 +30,7 @@ export default async function handler(
 
     const result = await vehicle.json();
 
-    // TODO: calculate carbon emitted by various aggregatons (trip, week, month, year)
+    // TODO: trim down reponse object to necessary props and create interfaces for said object
 
     res.status(200).json({ result, error: false });
 }

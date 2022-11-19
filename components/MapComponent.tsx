@@ -19,7 +19,7 @@ interface Props {
 
 export default function MapComponent({ updateLoadingFn }: Props) {
   useEffect(() => {
-    let map = new Map({
+    const map = new Map({
       container: 'map',
       style: 'https://tiles.stadiamaps.com/styles/osm_bright.json', // stylesheet location
       zoom: 9, // starting zoom

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { ApiResponse, FuelEconomyApiValue, FuelEconomyApiResponse } from '../../../shared/interfaces';
 import { reshapeApiResponse } from '../../../shared/reshape-api-response';
+import { fuelEconomyApiRoute } from '../../../shared/api-urls';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,7 +18,9 @@ export default async function handler(
       return res.status(400).json({ result: 'Bad Request', error: true });
     }
 
-    const models = await fetch(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${year}&make=${make}`, {
+    const url = fuelEconomyApiRoute.model(<string> year, <string> make);
+
+    const models = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'

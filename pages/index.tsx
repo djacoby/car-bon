@@ -10,13 +10,14 @@ import {
   SimpleGrid,
   Button,
   LoadingOverlay,
+  TextInput,
 } from '@mantine/core';
 
 
 import DropdownSelect from '../components/DropdownSelect';
 import MapComponent from '../components/MapComponent';
 
-import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle } from '../shared/interfaces';
+import { ApiResponse, FuelEconomyApiValue,FuelEconomyApiVehicle, OpenCageAddressLookupResponse } from '../shared/interfaces';
 
 export default function Home() {
   const [years, updateYears] = useState([] as FuelEconomyApiValue[]);
@@ -33,12 +34,20 @@ export default function Home() {
 
   const [vehicle, updateVehicle] = useState<FuelEconomyApiVehicle | null>(null);
 
+  const [startAddress, updateStartAddress] = useState('');
+  const [endAddress, updateEndAddress] = useState('');
+
+  // TODO: give this a proper type
+  const [startLocation, updateStartLocation] = useState<{}>();
+  const [endLocation, updateEndLocation] = useState<{}>();
+
   const [loading, updateLoading] = useState(true);
 
   useEffect(() => {
     getYears();
   },[]);
 
+  // TODO: extract these requests into an API client
   async function getYears() {
     const res: ApiResponse<FuelEconomyApiValue[]> = await (await fetch('http://localhost:3000/api/vehicle/years')).json();
 
@@ -66,9 +75,25 @@ export default function Home() {
   async function getVehicle() {
     const res: ApiResponse<FuelEconomyApiVehicle> = await (await fetch(`http://localhost:3000/api/vehicle/${selectedTrim}`)).json();
 
-    console.log(res.result);
-
     updateVehicle(res.result as FuelEconomyApiVehicle);
+  }
+
+  // TODO: possibly setup our api to take both addresses as a single call?
+  async function getStartCoordinates() {
+    const res: ApiResponse<OpenCageAddressLookupResponse> = await (await fetch(`http://localhost:3000/api/geo-coordinates?address=${startAddress}`)).json();
+
+    updateStartLocation(res.result);
+  }
+
+  async function getEndCoordinates() {
+    const res: ApiResponse<OpenCageAddressLookupResponse> = await (await fetch(`http://localhost:3000/api/geo-coordinates?address=${endAddress}`)).json();
+
+    updateEndLocation(res.result);
+  }
+
+  async function getCoords() {
+    await getStartCoordinates();
+    await getEndCoordinates();
   }
 
   function setYear(year: string) {
@@ -157,7 +182,7 @@ export default function Home() {
                   <Center>
                     <Text>
                       {/* TODO: update this copy to reflect the updated functionality */}
-                      Enter your vehicle information (year, make, model, trim) the distance of your commute (one way), and the number of days you make the commute.
+                      Enter your vehicle information (year, make, model, trim) below.
                     </Text>
                   </Center>
                 </Container>
@@ -201,29 +226,61 @@ export default function Home() {
                     />
                   }
 
-                  <SimpleGrid mt='md' cols={2}>
+                  <SimpleGrid mt='md' mb='md' cols={2}>
                     <Button
                       color='red'
                       disabled={!selectedYear}
                       onClick={resetForm}
+                      radius='md'
                     >
                       Clear
                     </Button>
                     <Button
                       disabled={!selectedTrim}
                       onClick={getVehicle}
+                      radius='md'
                     >
                       Select
                     </Button>
                   </SimpleGrid>
 
-                  {
+                  {/* {
                     vehicle &&
                     <div>
                       <p>Selected Vehicle: {vehicle.year} {vehicle.make} {vehicle.model}</p>
                       <p>Co2 Grams per Mile: {vehicle.co2TailpipeGpm}</p>
                     </div>
-                  }
+                  } */}
+
+
+                  <TextInput
+                    value={startAddress}
+                    onChange={(event) => updateStartAddress(event.currentTarget.value)}
+                    placeholder="123 Sesame Street New York, NY 10023"
+                    label="Start Address"
+                    radius="md"
+                    mb='md'
+                    withAsterisk
+                  />
+
+                  <TextInput
+                    value={endAddress}
+                    onChange={(event) => updateEndAddress(event.currentTarget.value)}
+                    placeholder="129 W 81st St, New York, NY 10024"
+                    label="End"
+                    radius="md"
+                    mb='md'
+                    withAsterisk
+                  />
+
+                  <Button
+                    fullWidth
+                    disabled={!vehicle}
+                    onClick={getCoords}
+                    radius='md'
+                  >
+                    Calculate
+                  </Button>
                 </Container>
               </Grid.Col>
 
